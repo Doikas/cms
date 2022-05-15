@@ -27,10 +27,10 @@
                     
                     ?>
 
-                    <!-- <li>
-                        <a href="#">About</a>
-                    </li>
                     <li>
+                        <a href="admin/index.php">Admin</a>
+                    </li>
+                    <!-- <li>
                         <a href="#">Services</a>
                     </li>
                     <li>
