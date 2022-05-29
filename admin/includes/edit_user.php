@@ -48,7 +48,7 @@ if (isset($_POST['edit_user'])) {
         <input type="text" value="<?php echo $user_lastname ?>" class="form-control" name="user_lastname">
     </div>
     <select name="user_role" id="">
-    <option value="subscriber"><?php echo $user_role; ?></option>
+    <option value="<?php echo $user_role; ?>" selected><?php echo $user_role; ?></option>
         <?php
         if ($user_role == 'admin') {
             echo "<option value='subscriber'>subscriber</option>";
@@ -74,6 +74,6 @@ if (isset($_POST['edit_user'])) {
         <input type="password" value="<?php echo $user_password ?>" class="form-control" name="user_password">
     </div>
     <div class="form-group">
-        <input class="btn btn-primary" type="submit" name="edit_user" value="Edit User">
+        <input class="btn btn-primary" type="submit" name="edit_user" value="Update User">
     </div>
 </form>

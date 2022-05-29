@@ -1,57 +1,56 @@
 <?php include "includes/admin_header.php" ?>
-    <div id="wrapper">
-        <!-- Navigation -->
-        <?php include "includes/admin_navigation.php" ?>
-        <div id="page-wrapper">
-            <div class="container-fluid">
-                <!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
+<div id="wrapper">
+    <!-- Navigation -->
+    <?php include "includes/admin_navigation.php" ?>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
                     <h1 class="page-header">
-                            Welcome to admin
-                            <small>Author</small>
-                        </h1>
-                        <?php 
-                        if(isset($_GET['source'])){
+                        Welcome to admin
+                        <small>Author</small>
+                    </h1>
+                    <?php
+                    if (isset($_GET['source'])) {
 
-                            $source = $_GET['source'];
-                        } else{
-                            $source = '';
-                        }
-                        switch($source) {
-                            case 'add_user';
+                        $source = $_GET['source'];
+                    } else {
+                        $source = '';
+                    }
+                    switch ($source) {
+                        case 'add_user';
                             include "includes/add_user.php";
                             break;
 
-                            case 'edit_user';
+                        case 'edit_user';
                             include "includes/edit_user.php";
                             break;
 
-                            case '36';
+                        case '36';
                             echo "n";
                             break;
 
-                            case '37';
+                        case '37';
                             echo "n";
                             break;
 
-                            case '38';
+                        case '38';
                             echo "n";
                             break;
 
-                            default:
+                        default:
                             include "includes/view_all_users.php";
                             break;
+                    }
 
-                        }
+                    ?>
 
-                        ?>
-                        
-                    </div>
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /.container-fluid -->
+            <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
     <?php include "includes/admin_footer.php" ?>
