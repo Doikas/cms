@@ -1,15 +1,11 @@
 <?php include "includes/header.php"; ?>
 <?php include "includes/db.php"; ?>
-
 <!-- Navigation -->
 <?php include "includes/navigation.php"; ?>
 <!-- Page Content -->
 <div class="container">
-
     <div class="row">
-
         <!-- Blog Entries Column -->
-
         <div class="col-md-8">
             <?php
             $count_published = 0;
@@ -27,9 +23,7 @@
                     $count_published = $count_published + 1;
                 }
                 if ($post_status !== 'published') {
-                    
                 } else {
-
             ?>
                     <h1 class="page-header">
                         Page Heading
@@ -60,3 +54,4 @@
     <!-- /.row -->
     <hr>
     <?php include "includes/footer.php"; ?>
+</div>
