@@ -24,6 +24,7 @@ if (isset($_POST['edit_user'])) {
     $username = $_POST['username'];
     $user_email = $_POST['user_email'];
     $user_password = $_POST['user_password'];
+    $hash_pass = password_hash($user_password, PASSWORD_DEFAULT);
     // $post_date = date('d-m-y');
     // move_uploaded_file($post_image_temp, "../images/$post_image");
     $query = "UPDATE users SET ";
@@ -32,10 +33,12 @@ if (isset($_POST['edit_user'])) {
     $query .= "user_role = '{$user_role}', ";
     $query .= "username = '{$username}', ";
     $query .= "user_email = '{$user_email}', ";
-    $query .= "user_password = '{$user_password}' ";
+    $query .= "user_password = '{$hash_pass}' ";
     $query .= "WHERE user_id = {$the_user_id} ";
     $edit_user_query = mysqli_query($connection, $query);
     confirmQuery($edit_user_query);
+    echo "<p class='bg-success'>User Updated. <a href='users.php'>View Users</a></p>";
+
 }
 ?>
 <form action="" method="post" enctype="multipart/form-data">
