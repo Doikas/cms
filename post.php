@@ -11,7 +11,12 @@
             <?php
             if (isset($_GET['p_id'])) {
                 $the_post_id = $_GET['p_id'];
-            }
+                $view_query = "UPDATE posts SET post_view_count = post_view_count + 1 WHERE post_id = $the_post_id ";
+                $send_query = mysqli_query($connection, $view_query);
+                if(!$send_query){
+                    die("Query Failed");
+                }
+            
             $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
             $select_all_posts_query = mysqli_query($connection, $query);
             while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -30,7 +35,7 @@
                     <a href="#"><?php echo $post_title ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php"><?php echo $post_author ?></a>
+                By <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $the_post_id; ?>"><?php echo $post_author ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span><?php echo $post_date ?></p>
                 <hr>
@@ -38,7 +43,15 @@
                 <hr>
                 <p><?php echo $post_content ?></p>
                 <hr>
-            <?php  } ?>
+            <?php  } 
+        
+        
+        } else {
+            header("Location: index.php");
+        }
+        
+        
+        ?>
             <!-- Blog Comments -->
             <?php
             if (isset($_POST['create_comment'])) {
@@ -53,6 +66,7 @@
                 if (!$create_comment_query) {
                     die('QUERY FAILED' . mysqli_error($connection));
                 }
+                redirect(location:"/post.php?p_id=$the_post_id ");
                 $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
                 $query .= "WHERE post_id = '{$the_post_id}' ";
                 $update_comment_count = mysqli_query($connection, $query);
