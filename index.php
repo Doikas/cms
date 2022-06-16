@@ -8,7 +8,6 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
             <?php
-            $count_published = 0;
             $per_page = 5;
             if(isset($_GET['page'])){
                 $page = $_GET['page'];
@@ -20,9 +19,17 @@
             } else {
                 $page_1 = ($page * $per_page) - $per_page;
             }
-            $post_query_count = "SELECT * FROM posts";
+            if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
+                $post_query_count = "SELECT * FROM posts";
+            } else{
+                $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
+
+            }
             $find_count = mysqli_query($connection, $post_query_count);
             $count = mysqli_num_rows($find_count);
+            if($count < 1) {
+                echo '<h1 class="text-center">No Posts Available</h1>';
+            } else {
             $count = ceil($count / $per_page);
 
 
@@ -38,11 +45,7 @@
                 $post_image = $row['post_image'];
                 $post_content = substr($row['post_content'], 0, 100);
                 $post_status = $row['post_status'];
-                if ($post_status == 'published') {
-                    $count_published = $count_published + 1;
-                }
-                if ($post_status !== 'published') {
-                } else {
+                
             ?>
                     <h1 class="page-header">
                         Page Heading
@@ -65,9 +68,7 @@
                     <hr>
             <?php }
             }
-            if ($count_published == 0) {
-                echo '<h1 class="text-center">No Posts</h1>';
-            } ?>
+             ?>
         </div>
         <!-- Blog Sidebar Widgets Column -->
         <?php include "includes/sidebar.php"; ?>

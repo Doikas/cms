@@ -101,6 +101,7 @@ if (isset($_POST['update_post'])) {
         <input value="<?php //echo $post_user; ?>" type="text" class="form-control" name="post_user">
     </div> -->
     <div class="form-group">
+        <label for="post_status">Post Status</label>
     <select name="post_status" id="">
         <option value='<?php echo $post_status ?>'><?php echo $post_status; ?></option>
         <?php 
