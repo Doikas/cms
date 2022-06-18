@@ -94,4 +94,37 @@ function escape($string) {
   global $connection;
   return  mysqli_real_escape_string($connection, trim($string));
 }
+function recordCount($table){
+global $connection;
+$query ="SELECT * FROM " . $table;
+$select_all_posts = mysqli_query($connection,$query);
+$result = $post_count = mysqli_num_rows($select_all_posts);
+confirmQuery($result);
+return $result;
+}
+
+function checkStatus($table,$column,$status){
+    global $connection;
+    $query ="SELECT * FROM $table WHERE $column = '$status' ";
+    $result = mysqli_query($connection,$query);
+    return mysqli_num_rows($result);
+
+}
+
+function is_admin($username = ''){
+    global $connection;
+    $query = "SELECT user_role FROM users WHERE username = '$username'";
+    $result = mysqli_query($connection, $query);
+    confirmQuery($result);
+    $row  = mysqli_fetch_array($result);
+    if($row['user_role'] == 'admin'){
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+
+
 ?>

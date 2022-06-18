@@ -19,10 +19,10 @@
             } else {
                 $page_1 = ($page * $per_page) - $per_page;
             }
-            if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
-                $post_query_count = "SELECT * FROM posts";
+            if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'){
+                $post_query_count = "SELECT * FROM posts ";
             } else{
-                $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
+                $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
 
             }
             $find_count = mysqli_query($connection, $post_query_count);
@@ -35,8 +35,8 @@
 
 
 
-            $query = "SELECT * FROM posts LIMIT $page_1,$per_page";
-            $select_all_posts_query = mysqli_query($connection, $query);
+            // $query = "SELECT * FROM posts LIMIT $page_1,$per_page";
+            $select_all_posts_query = mysqli_query($connection, $post_query_count);
             while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
                 $post_id = $row['post_id'];
                 $post_title = $row['post_title'];
@@ -60,7 +60,7 @@
                     <p><span class="glyphicon glyphicon-time"></span><?php echo $post_date ?></p>
                     <hr>
                     <a href="post.php?p_id=<?php echo $post_id ?>">
-                    <img class="img-responsive" src="images/<?php echo $post_image ?>" alt="">
+                    <img class="img-responsive" style="width:500px;" src="images/<?php echo $post_image ?>" alt="">
                     </a>
                     <hr>
                     <p><?php echo $post_content ?></p>
