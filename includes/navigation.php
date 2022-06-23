@@ -41,10 +41,21 @@
                     
                     
                     ?>
-
-                    <li>
+                    <?php if(isLoggedIn()):?>
+                        <li>
                         <a href="admin/index.php">Admin</a>
                     </li>
+                    <li>
+                        <a href="includes/logout.php">Logout</a>
+                    </li>
+                    <?php else: ?>
+                        <li>
+                        <a href="login.php">Login</a>
+                    </li>
+                    <?php endif; ?>
+
+                    
+                    
                     <li class='<?php echo $registration_class; ?>'>
                         <a href="registration.php">Registration</a>
                     </li>
