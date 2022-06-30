@@ -15,7 +15,8 @@ $connection = mysqli_connect('localhost', 'root', '', 'cms');
 //     echo "we are connected";
 
 // }
-
-
+// i have to test it first
+// $query = "SET NAMES utf8";
+// mysqli_query($connection,$query);
 
 ?>
