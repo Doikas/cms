@@ -79,10 +79,11 @@ if(isset(($_POST['checkBoxArray']))){
         <tbody>
             <?php
             // $query = "SELECT * FROM posts ORDER BY post_date Desc";
+            $user = currentUser();
             $query = "SELECT posts.post_id, posts.post_author, posts.post_user, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, ";
             $query .= "posts.post_tags, posts.post_comment_count, posts.post_date, posts.post_view_count, categories.cat_id, categories.cat_title ";
             $query .= " FROM posts ";
-            $query .= " LEFT JOIN categories ON posts.post_category_id = categories.cat_id ORDER BY posts.post_date Desc";
+            $query .= " LEFT JOIN categories ON posts.post_category_id = categories.cat_id WHERE post_user ='$user' ORDER BY posts.post_date Desc"; //remove where post_user=$user to see all posts
             $select_posts = mysqli_query($connection, $query);
             while ($row = mysqli_fetch_assoc($select_posts)) {
                 $post_id = escape($row['post_id']);

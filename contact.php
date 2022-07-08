@@ -1,13 +1,36 @@
+<?php use PHPMailer\PHPMailer\PHPMailer; ?>
+<?php use PHPMailer\PHPMailer\SMTP; ?>
+<?php use PHPMailer\PHPMailer\Exception;?>
 <?php  include "includes/db.php"; ?>
 <?php  include "includes/header.php"; ?>
 <?php
+require './vendor/autoload.php';
 
 if(isset($_POST['submit'])){
     $to = "stevekdoikas@hotmail.com";
     $subject = wordwrap($_POST['subject'], 70);
     $body = $_POST['body'];
-    $header = "From: " . $_POST['email'];
-    mail($to,$subject,$body,$header);
+    $header =$_POST['email'];
+    $mail = new PHPMailer();
+            $mail->isSMTP();                                            
+            $mail->Host       = Config::SMTP_HOST;                    
+            $mail->SMTPAuth   = true;
+            $mail->Username   = Config::SMTP_USER;                     
+            $mail->Password   = Config::SMTP_PASSWORD;                                                                                   
+            $mail->SMTPSecure = 'tls';            
+            $mail->Port       = Config::SMTP_PORT;
+            $mail->isHTML(true);
+            $mail->CharSet = 'utf-8';
+            // $mail->setFrom($header, 'Stefanos Doikas');
+            $mail->addAddress($to);
+            $mail->From = $header;
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            if($mail->send()){
+                $emailSent = true;
+            }  else {
+                echo "Oups Error {$mail->ErrorInfo}";
+            }   
 }
 ?>
 

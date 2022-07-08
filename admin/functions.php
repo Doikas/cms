@@ -222,4 +222,19 @@ function login_user($username, $password){
     return true;
     }
 
+    function currentUser(){
+        if(isset($_SESSION['username'])){
+            return $_SESSION['username'];
+        }
+        return false;
+    }
+
+
+    function imagePlaceholder($image=''){
+        if(!$image){
+            return 'c++.png';
+        } else {
+            return $image;
+        }
+    }
 ?>
