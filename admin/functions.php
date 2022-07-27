@@ -1,4 +1,6 @@
 <?php
+
+//========== DATABASE HELPER FUNCTIONS =======//
 function confirmQuery($result)
 {
     global $connection;
@@ -12,12 +14,13 @@ function insert_categories()
     global $connection;
     if (isset($_POST['submit'])) {
         $cat_title = $_POST['cat_title'];
+        $user_id = loggedInUserId();
 
         if ($cat_title == "" || empty($cat_title)) {
             echo "This field shouldn't be empty ";
         } else {
-            $query = "INSERT INTO categories(cat_title) ";
-            $query .= "VALUE('{$cat_title}') ";
+            $query = "INSERT INTO categories(cat_title, user_id) ";
+            $query .= "VALUE('{$cat_title}', '{$user_id}') ";
             $create_category_query = mysqli_query($connection, $query);
             if (!$create_category_query) {
                 die('QUERY FAILED' . mysqli_error($connection));
@@ -37,8 +40,10 @@ function findallCategories()
         echo "<tr>";
         echo "<td>{$cat_id}</td>";
         echo "<td>{$cat_title}</td>";
+        if (is_admin()){
         echo "<td><a href='categories.php?delete={$cat_id}'>Delete</a></td>";
         echo "<td><a href='categories.php?edit={$cat_id}'>Edit</a></td>";
+        }
         echo "</tr>";
     }
 }
@@ -98,16 +103,37 @@ function escape($string)
     global $connection;
     return  mysqli_real_escape_string($connection, trim($string));
 }
+function get_all_user_posts()
+{
+    return query("SELECT * FROM posts WHERE user_id=" . loggedInUserId() . "");
+}
+function get_all_posts_user_comments()
+{
+    return query("SELECT * FROM posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=" . loggedInUserId() . "");
+}
+function get_all_user_categories()
+{
+    return query("SELECT * FROM categories WHERE user_id=" . loggedInUserId() . "");
+}
+function count_records($result)
+{
+    return mysqli_num_rows($result);
+}
 function recordCount($table)
 {
     global $connection;
     $query = "SELECT * FROM " . $table;
     $select_all_posts = mysqli_query($connection, $query);
-    $result = $post_count = mysqli_num_rows($select_all_posts);
+    $result = mysqli_num_rows($select_all_posts);
     confirmQuery($result);
     return $result;
 }
-
+function get_all_active_draft_posts($table, $column, $status){
+    return query("SELECT * FROM $table WHERE $column = '$status' AND user_id=" . loggedInUserId() . "");
+}
+function get_all_unapproved_approved_comments($status){
+    return query("SELECT * FROM posts INNER JOIN comments ON posts.post_id = comments.comment_post_id WHERE user_id=" . loggedInUserId() . " AND comment_status = '$status' ");
+}
 function checkStatus($table, $column, $status)
 {
     global $connection;
@@ -116,18 +142,23 @@ function checkStatus($table, $column, $status)
     return mysqli_num_rows($result);
 }
 
-function is_admin($username)
+function is_admin()
 {
-    global $connection;
-    $query = "SELECT user_role FROM users WHERE username = '$username'";
-    $result = mysqli_query($connection, $query);
-    confirmQuery($result);
-    $row  = mysqli_fetch_array($result);
-    if ($row['user_role'] == 'admin') {
-        return true;
-    } else {
-        return false;
+    if (isLoggedIn()) {
+        $result = query("SELECT user_role FROM users WHERE user_id = " . $_SESSION['user_id'] . "");
+        $row  = fetchRecord($result);
+        if ($row['user_role'] == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
     }
+    return false;
+}
+
+function fetchRecord($result)
+{
+    return mysqli_fetch_array($result);
 }
 
 function username_exists($username)
@@ -219,6 +250,7 @@ function login_user($username, $password)
         $db_user_lastname = $row['user_lastname'];
         $db_user_role = $row['user_role'];
         if ($username === $db_username && password_verify($password, $db_user_password)) {
+            $_SESSION['user_id'] = $db_user_id;
             $_SESSION['username'] = $db_username;
             $_SESSION['firstname'] = $db_user_firstname;
             $_SESSION['lastname'] = $db_user_lastname;
@@ -251,7 +283,9 @@ function imagePlaceholder($image = '')
 function query($query)
 {
     global $connection;
-    return mysqli_query($connection, $query);
+    $result = mysqli_query($connection, $query);
+    confirmQuery($result);
+    return $result;
 }
 function loggedInUserId()
 {
@@ -274,4 +308,8 @@ function getPostlikes($post_id)
     $result = query("SELECT * FROM likes WHERE post_id=$post_id");
     confirmQuery($result);
     echo mysqli_num_rows($result);
+}
+function get_user_name()
+{
+    return isset($_SESSION['username']) ? $_SESSION['username'] : null;
 }

@@ -15,8 +15,12 @@
     </thead>
     <tbody>
         <?php
-        $query = "SELECT * FROM comments";
-        $select_comments = mysqli_query($connection, $query);
+        if (is_admin()){
+            $query = "SELECT * FROM comments";
+            $select_comments = mysqli_query($connection, $query);
+        } else {
+            $select_comments = get_all_posts_user_comments();
+        }
         while ($row = mysqli_fetch_assoc($select_comments)) {
             $comment_id = $row['comment_id'];
             $comment_post_id = $row['comment_post_id'];

@@ -68,7 +68,7 @@ if (isset($_POST['unliked'])) {
                         </p>
                         <p><span class="glyphicon glyphicon-time"></span><?php echo $post_date ?></p>
                         <hr>
-                        <img class="img-responsive" src="images/<?php echo imagePlaceholder($post_image) ?>" alt="">
+                        <img class="img-responsive" style="width:500px;" src="images/<?php echo imagePlaceholder($post_image) ?>" alt="">
                         <hr>
                         <p><?php echo $post_content ?></p>
                         <hr>
@@ -106,7 +106,7 @@ if (isset($_POST['unliked'])) {
                             if (!$create_comment_query) {
                                 die('QUERY FAILED' . mysqli_error($connection));
                             }
-                            redirect(location: "/post.php?p_id=$the_post_id ");
+                            // redirect("/post.php?p_id=$the_post_id");
                             // $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
                             // $query .= "WHERE post_id = '{$the_post_id}' ";
                             // $update_comment_count = mysqli_query($connection, $query);

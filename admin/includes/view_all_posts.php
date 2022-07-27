@@ -19,6 +19,7 @@ if(isset(($_POST['checkBoxArray']))){
                 case 'clone':
                     $query = "SELECT * FROM posts WHERE post_id = {$postValueId} ";
                     $select_post_query = mysqli_query($connection, $query);
+                    $user_id= loggedInUserId();
                     while ($row = mysqli_fetch_assoc($select_post_query)) {
                         $post_title = escape($row['post_title']);
                         $post_category_id = escape($row['post_category_id']);
@@ -29,8 +30,8 @@ if(isset(($_POST['checkBoxArray']))){
                         $post_tags = escape($row['post_tags']);
                         $post_content = escape($row['post_content']);
                     }
-                    $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_date, post_image, post_content, post_tags, post_status) ";
-                    $query .= "VALUES('{$post_category_id}','{$post_title}','{$post_user}',now(),'{$post_image}','{$post_content}','{$post_tags}','{$post_status}') ";
+                    $query = "INSERT INTO posts(post_category_id, post_title, post_user, user_id, post_date, post_image, post_content, post_tags, post_status) ";
+                    $query .= "VALUES('{$post_category_id}','{$post_title}','{$post_user}','{$user_id}', now(),'{$post_image}','{$post_content}','{$post_tags}','{$post_status}') ";
                     $copy_query = mysqli_query($connection, $query);
                     if(!$copy_query){
                         die("QUERY FAILED" . mysqli_error($connection));
